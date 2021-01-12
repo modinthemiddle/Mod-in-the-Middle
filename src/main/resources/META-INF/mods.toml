@@ -1,0 +1,61 @@
+#####################
+# Mod in the Middle #
+#####################
+
+modLoader="javafml"
+
+loaderVersion="[35,)"
+
+license="MIT"
+
+issueTrackerURL="https://github.com/modinthemiddle/Mod-in-the-Middle/issues/"
+
+[[mods]]
+
+    modId="middlemod"
+
+    version="0.0.1"
+
+    displayName="Mod in the Middle"
+
+    displayURL="https://modinthemiddle.github.io"
+
+    updateJSONURL="https://modinthemiddle.github.io/releases.json"
+
+    logoFile="logo.png"
+
+    authors="Ki11er_wolf"
+
+    #credits="Ki11er_wolf"
+
+    description='''
+    A Forge Modding API and Library for simplifying mod creation and development.
+
+    This mod is a common dependency of many other mods, and is required for them to work.
+    '''
+
+    # Dependency: Minecraft
+    [[dependencies.examplemod]]
+
+        modId="minecraft"
+
+        mandatory=true
+
+        versionRange="[1.16.4)"
+
+        ordering="NONE"
+
+        side="BOTH"
+
+    # Dependency: MinecraftForge
+    [[dependencies.examplemod]]
+
+        modId="forge"
+
+        mandatory=true
+
+        versionRange="[35.1.32,)"
+
+        ordering="NONE"
+
+        side="BOTH"
