@@ -1,25 +1,12 @@
-# eclipse
-bin
-*.launch
-.settings
-.metadata
-.classpath
-.project
-
-# idea
-out
+/.idea
 *.ipr
 *.iws
 *.iml
-/.idea
 .idea
-
-# gradle
-build
 .gradle
-
-# root
+build
+out
 eclipse
 logs
 run
-
+releases

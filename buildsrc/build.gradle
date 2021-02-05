@@ -22,16 +22,30 @@
  * SOFTWARE.
  */
 
-/*
-    Gradle project settings for the Mod-in-the-Middle and its 'buildSrc' subprojects.
-    Defines the name of the project, and includes the 'buildSrc' subproject - allowing
-    it to be used within the root project.
-*/
+// ####################################################
+// # ModInTheMiddle-ModBuilder subproject buildscript #
+// ####################################################
 
-// Sets the display name of the root project to 'Mod-in-the-Middle'.
-rootProject.name = 'Mod-in-the-Middle'
+/* ModBuilder specific plugins */
+apply plugin: 'java-gradle-plugin'
+apply plugin: 'java'
 
-// Includes the '/buildsrc' subproject, within the root project, making it usable within
-// the root project and build files. The buildSrc subproject, named 'ModBuilder', provides
-// a gradle plugin and general library for developing MinecraftForge Mod build scripts.
-include 'buildSrc' // ModBuilder
+/* ModBuilder version */
+version project.properties['modbuilder.version']
+
+/* ModBuilder name and group (default package) */
+archivesBaseName = project.properties['modbuilder.name']
+group project.properties['modbuilder.group']
+
+/* Task responsible for copying the Archive (jar) to the releases folder when built */
+build.finalizedBy('copyArchive')
+task copyArchive(type: Copy) {
+    from "build/libs/${archivesBaseName}-${version}.jar"
+    into project.properties['modbuilder.releases']
+}
+
+/* Simple task to display a summary of the build including version number. */
+build.finalizedBy('buildSummary')
+task buildSummary {
+    System.out.println("********* Build Complete: ${archivesBaseName}-${version} ********* ")
+}

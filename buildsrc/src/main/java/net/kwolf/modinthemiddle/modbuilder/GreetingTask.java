@@ -22,16 +22,15 @@
  * SOFTWARE.
  */
 
-/*
-    Gradle project settings for the Mod-in-the-Middle and its 'buildSrc' subprojects.
-    Defines the name of the project, and includes the 'buildSrc' subproject - allowing
-    it to be used within the root project.
-*/
+package net.kwolf.modinthemiddle.modbuilder;
 
-// Sets the display name of the root project to 'Mod-in-the-Middle'.
-rootProject.name = 'Mod-in-the-Middle'
+import org.gradle.api.DefaultTask;
+import org.gradle.api.tasks.TaskAction;
 
-// Includes the '/buildsrc' subproject, within the root project, making it usable within
-// the root project and build files. The buildSrc subproject, named 'ModBuilder', provides
-// a gradle plugin and general library for developing MinecraftForge Mod build scripts.
-include 'buildSrc' // ModBuilder
+public class GreetingTask extends DefaultTask {
+
+    @TaskAction
+    public void run() {
+        System.out.println("Hello from task " + getPath() + "!");
+    }
+}
