@@ -4,7 +4,7 @@
 
 modLoader="javafml"
 
-loaderVersion="[35,)"
+loaderVersion="[36,)"
 
 license="MIT"
 
@@ -12,7 +12,7 @@ issueTrackerURL="https://github.com/modinthemiddle/Mod-in-the-Middle/issues/"
 
 [[mods]]
 
-    modId="middlemod"
+    modId="modinthemiddle"
 
     version="0.0.1"
 

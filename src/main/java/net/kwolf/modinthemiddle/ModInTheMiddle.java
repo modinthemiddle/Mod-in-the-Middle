@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.kwolf.middlemod;
+package net.kwolf.modinthemiddle;
 
 import net.minecraft.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
@@ -40,12 +40,12 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.stream.Collectors;
 
-@Mod("middlemod")
-public class MiddleMod {
+@Mod("modinthemiddle")
+public class ModInTheMiddle {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public MiddleMod() {
+    public ModInTheMiddle() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
