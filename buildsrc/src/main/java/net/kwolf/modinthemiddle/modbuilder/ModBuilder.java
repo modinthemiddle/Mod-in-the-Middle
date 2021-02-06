@@ -29,7 +29,7 @@ import org.gradle.api.Project;
 
 public class ModBuilder {
 
-    public static class GradlePlugin implements Plugin<Project> {
+    public static class Gradle implements Plugin<Project> {
 
         @Override
         public void apply(Project project) {
