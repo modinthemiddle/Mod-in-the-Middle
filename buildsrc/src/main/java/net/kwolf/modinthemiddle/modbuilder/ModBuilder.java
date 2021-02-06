@@ -29,19 +29,6 @@ import org.gradle.api.Project;
 
 public class ModBuilder {
 
-    public static final Properties BUILD_PROPERTIES = new Properties("Name", "Version", "ID");
-
-    public static class Properties {
-
-        public final String name, version, id;
-
-        private Properties(String name, String version, String id) {
-            this.name = name;
-            this.version = version;
-            this.id = id;
-        }
-    }
-
     public static class GradlePlugin implements Plugin<Project> {
 
         @Override

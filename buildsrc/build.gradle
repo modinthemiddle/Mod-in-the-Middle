@@ -30,10 +30,10 @@
 apply plugin: 'java-gradle-plugin'
 apply plugin: 'java'
 
-/* ModBuilder version */
+/* ModBuilder version (Set with gradle.properties) */
 version project.properties['modbuilder.version']
 
-/* ModBuilder name and group (default package) */
+/* ModBuilder name and group/package (Set with gradle.properties) */
 archivesBaseName = project.properties['modbuilder.name']
 group project.properties['modbuilder.group']
 

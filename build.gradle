@@ -24,24 +24,19 @@
 
 import net.kwolf.modinthemiddle.modbuilder.ModBuilder
 
-buildscript {
-    repositories {
-        jcenter()
-        mavenCentral()
-
-        maven {
-            url = 'https://files.minecraftforge.net/maven'
-        }
-    }
-
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
-    }
-}
-
 apply plugin: 'java'
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: ModBuilder.GradlePlugin
+
+buildscript {
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+    }
+    repositories {
+        mavenCentral()
+        maven { url = 'https://files.minecraftforge.net/maven' }
+    }
+}
 
 version = '1.0.0'
 group = 'net.kwolf.modinthemiddle'
