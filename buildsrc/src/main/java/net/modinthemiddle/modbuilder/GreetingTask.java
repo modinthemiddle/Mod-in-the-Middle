@@ -22,19 +22,15 @@
  * SOFTWARE.
  */
 
-package net.kwolf.modinthemiddle.modbuilder;
+package net.modinthemiddle.modbuilder;
 
-import org.gradle.api.Plugin;
-import org.gradle.api.Project;
+import org.gradle.api.DefaultTask;
+import org.gradle.api.tasks.TaskAction;
 
-public class ModBuilder {
+public class GreetingTask extends DefaultTask {
 
-    public static class Gradle implements Plugin<Project> {
-
-        @Override
-        public void apply(Project project) {
-            project.getTasks().create("hello", GreetingTask.class);
-        }
-
+    @TaskAction
+    public void run() {
+        System.out.println("Hello from task " + getPath() + "!");
     }
 }

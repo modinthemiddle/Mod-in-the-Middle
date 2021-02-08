@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package net.kwolf.modinthemiddle;
+package net.modinthemiddle;
 
 import net.minecraft.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;

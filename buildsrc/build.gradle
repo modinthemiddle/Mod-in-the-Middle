@@ -27,25 +27,44 @@
 // ####################################################
 
 /* ModBuilder specific plugins */
-apply plugin: 'java-gradle-plugin'
-apply plugin: 'java'
+plugins {
+    id 'java-gradle-plugin'
+}
 
 /* ModBuilder version (Set with gradle.properties) */
-version project.properties['modbuilder.version']
+version property('version')
 
 /* ModBuilder name and group/package (Set with gradle.properties) */
-archivesBaseName = project.properties['modbuilder.name']
-group project.properties['modbuilder.group']
+archivesBaseName = property('name')
+group property('source-group')
+
+/* ModBuilder Gradle-Plugin: ID & Main-Class definition*/
+gradlePlugin {
+    plugins {
+         ModBuilder {
+             //noinspection GroovyAssignabilityCheck
+             id = property('plugin.id')
+             //noinspection GroovyAssignabilityCheck
+             implementationClass = property('plugin.class')
+        }
+    }
+}
 
 /* Task responsible for copying the Archive (jar) to the releases folder when built */
-build.finalizedBy('copyArchive')
 task copyArchive(type: Copy) {
     from "build/libs/${archivesBaseName}-${version}.jar"
-    into project.properties['modbuilder.releases']
+    into this.property('build-output.directory')
 }
+if (property('build-output') == "true")
+    build.finalizedBy('copyArchive')
 
 /* Simple task to display a summary of the build including version number. */
 build.finalizedBy('buildSummary')
 task buildSummary {
     System.out.println("********* Build Complete: ${archivesBaseName}-${version} ********* ")
+}
+
+/* Gets a ModBuilder property 'project.modbuilder.*' from gradle.properties  */
+Object property(String key) {
+    return project.properties['project.modbuilder.' + key]
 }
