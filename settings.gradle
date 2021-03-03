@@ -1,13 +1,12 @@
 /*
-    Gradle project settings for the Mod-in-the-Middle and its 'buildSrc' subproject.
-    Defines the name of the project, and includes the 'buildSrc' subproject - allowing
-    it to be used within the root project.
+    Identifies and imports projects and
+    subprojects in addition to naming them.
 */
 
-// Sets the display name of the this project to 'Mod-in-the-Middle'.
-rootProject.name = 'Mod-in-the-Middle'
+/* Imports the Mod-Builder project and specifies its name. */
+include "mod-builder"; project(":mod-builder").projectDir = file(
+        "mod-builder" // <-- Mod-Builder project source directory (relative to root folder).
+)
 
-// Includes the '/buildsrc' subproject, within the root project, making it usable within
-// the root project and build files. The buildSrc subproject, named 'ModBuilder', provides
-// a gradle plugin and general library for developing MinecraftForge Mod build scripts.
-include 'buildSrc' // ModBuilder
+/* Specifies the name of the main Mod-in-the-Middle (root) project. */
+rootProject.name = 'Mod-in-the-Middle'

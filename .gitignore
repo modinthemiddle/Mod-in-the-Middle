@@ -9,4 +9,5 @@ out
 eclipse
 logs
 run
-releases
+builds
+mod-builder/builds

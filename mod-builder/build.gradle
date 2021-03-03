@@ -1,0 +1,172 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2021 Ki11er_wolf.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+// ########################################################
+// # Mod-in-the-Middle.Mod-Builder subproject buildscript #
+// ########################################################
+
+/**
+ * The list of plugins for this plugin.
+ */
+plugins {
+    id 'java'
+    id 'java-gradle-plugin'
+}
+
+/* CONFIGURATION PROPERTIES & DEFINITIONS */
+
+/**
+ * The current build number, incremented
+ * each build. Used internally as a version String.
+ */
+version 'b' + property('build-number')
+
+/**
+ * The version string the last public release was given.
+ */
+def lastReleaseVersion = property('last-release-version')
+
+/**
+ * The file name (excluding build number) given to
+ * the development builds archives.
+ */
+archivesBaseName = property('name')
+
+/**
+ * The unique reverse-domain & package name.
+ */
+group property('source-group')
+
+/* JAR-PLUGIN BUILD & CONFIGURE */
+
+/**
+ * A simple flag set to false when doing a complete build
+ * & maven release for public usage, instead of a normal build.
+ * DON'T TOUCH!
+ */
+def isDevelopmentBuild = true
+
+/**
+ * Defines the unique name of this Gradle-Plugin &
+ * the Main-Class.
+ */
+gradlePlugin {
+    final DEVELOPMENT_ID_SUFFIX = ".dev";
+
+    plugins {
+        modbuilderPlugin {
+            id = property('plugin.id') + (isDevelopmentBuild ? DEVELOPMENT_ID_SUFFIX : '')
+            implementationClass = property('plugin.class')
+        }
+    }
+}
+
+/* BUILD & RELEASE TASKS */
+
+/**
+ * Increments the build number (dev version) each
+ * time the 'build' task in run.
+ */
+task incrementBuildNumber() {
+    tasks.build.finalizedBy incrementBuildNumber
+
+    def propertyKey = "project.modbuilder.build-number"
+    def nextBuildNumber = Integer.parseInt(((String)version).substring(1)) + 1
+
+    ant.propertyfile(file: "gradle.properties") {
+        entry(key: propertyKey, value: nextBuildNumber)
+    }
+}
+
+/**
+ * Creates/updates the 'latest' development build file.
+ * Ensures there exists a release with a constant name
+ * that is always updated.
+ */
+task updateLatestDevBuild(type: Copy) {
+    from "build/libs/${archivesBaseName}-${version}.jar"
+    into this.property('builds.development.path')
+
+    rename "${archivesBaseName}-${version}.jar", "${archivesBaseName}-Latest.jar"
+}
+
+/**
+ * Creates a copy of the development build within
+ * the development-builds folder.
+ */
+task createDevBuildCopy(type: Copy) {
+    build.dependsOn createDevBuildCopy
+    finalizedBy updateLatestDevBuild
+
+    from "build/libs/${archivesBaseName}-${version}.jar"
+    into this.property('builds.development.path')
+}
+
+/**
+ * Prints out build completion message and build number.
+ * Run after the 'build' task completes.
+ */
+task buildSummary {
+    finalizedBy buildSummary
+    System.out.println("********* [Mod-Builder] Latest build: ${archivesBaseName}-${version} ********* ")
+}
+
+/**
+ * Gets a named property, prefixed by 'project.modbuilder.', from gradle.properties.
+ */
+Object property(String key) {
+    return project.properties['project.modbuilder.' + key]
+}
+
+/* JAR MANIFEST */
+
+/**
+ * Adds a bunch of useful information regarding
+ * the plugin jar to the manifest.
+ */
+jar {
+    manifest {
+        attributes([
+                // Title
+                "Implementation-Title": archivesBaseName,
+                "Specification-Title": archivesBaseName,
+                // Group
+                "Implementation-Vendor": "Ki11er_wolf's Mod-in-the-Middle",
+                "Specification-Vendor": "Mod-in-the-Middle",
+                // Build Number
+                "Implementation-Version": version,
+                "Specification-Version": version,
+                // Governing License
+                "License": "MIT",
+                // Official URL
+                "URL": "https://modinthemiddle.github.io/",
+                // Build Timestamp
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                // JDK compiler: make, vendor, and version.
+                "Compiler-Make": (System.getProperty("java.vendor") == "Oracle Corporation" ? "Oracle JDK" : "OpenJDK"),
+                "Compiler-Version": System.getProperty("java.version"),
+                "Compiler-Vendor": System.getProperty("java.vendor")
+        ])
+    }
+}
